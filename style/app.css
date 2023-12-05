@@ -12,14 +12,14 @@ body{
 }
 
 aside{
-  background-color: hsl(0, 0%, 0%);
+  background-color: rgb(0, 0, 0);
   max-width: 235px;
   min-width: 235px;
 }
 
 main{
   align-items: center;
-  background-color: hsl(235, 11%, 23%);
+  background-color: rgb(52, 53, 65);
   display: flex;
   flex-direction: column;
   width: 100%;
@@ -30,7 +30,7 @@ main{
 }
 
 .new-conversation{
-  border: 1px solid hsla(210, 3%, 13%, 0);
+  border: 1px solid rgba(32, 33, 34, 0);
   border-radius: 0.3rem;
   display: flex;
   gap: 0.5rem;
@@ -38,14 +38,14 @@ main{
 }
 
 .new-conversation:hover{
-  background-color: hsl(220, 4%, 13%);
-  border: 1px solid hsla(210, 3%, 13%, 0.50);
+  background-color: rgb(32, 33, 34);
+  border: 1px solid rgba(32, 33, 34, 0.5);
   cursor: pointer;
 }
 
 .new-conversation-model-icon{
   align-items: center;
-  background-color: hsl(0, 0%, 100%);
+  background-color: rgb(255, 255, 255);
   border-radius: 50%;
   display: flex;
   height: 1.5rem;
@@ -64,7 +64,7 @@ main{
 }
 
 .new-conversation-model-name span{
-  color: hsl(0, 0%, 100%);
+  color: rgb(255, 255, 255);
   font-family: 'SoehneBuch', sans-serif; 
   font-size: 0.75rem;
 }
@@ -80,13 +80,13 @@ main{
 }
 
 .new-conversation-model-start svg path{
-  fill: grey;
+  fill: rgb(128, 128, 128);
 }
 
 .new-conversation-model-start .tooltiptext {
   background-color: black;
   border-radius: 0.5rem;
-  color: #fff;
+  color: hsl(0, 0%, 100%);
   font-family: 'SoehneBuch', sans-serif;
   font-size: 0.8rem;
   margin-top: -0.5rem;
@@ -103,7 +103,7 @@ main{
 }
 
 .new-conversation-model-start .tooltiptext::after {
-  border-color: transparent #000000 transparent transparent;
+  border-color: transparent rgb(0, 0, 0) transparent transparent;
   border-style: solid;
   border-width: 5px;
   content: " ";
@@ -135,12 +135,12 @@ main{
 }
 
 .history:hover::-webkit-scrollbar-thumb{
-  background-color: hsl(0, 0%, 53%); 
+  background-color: rgb(135, 135, 135); 
   border-radius: 1rem;
 }
 
 .history:hover::-webkit-scrollbar-thumb:hover{
-  background-color: hsl(0, 0%, 78%); 
+  background-color: rgb(199, 199, 199); 
 }
 
 .history-record{
@@ -172,7 +172,7 @@ main{
 }
 
 .history-record-messages ul li a{
-  color: hsl(0, 0%, 100%);
+  color: rgb(255, 255, 255);
   display: inline-block;
   font-family: Arial, Helvetica, sans-serif; 
   font-size: 0.8rem;
@@ -186,7 +186,7 @@ main{
 }
 
 .history-record-messages ul li a::after {
-  background: linear-gradient(90deg, hsla(0, 0%, 0%, 0) 0%, hsla(0, 0%, 0%, 0.502) 50%, hsl(0, 0%, 0%) 100%);
+  background: linear-gradient(90deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.502) 50%, rgb(0, 0, 0) 100%);
   bottom: 0;
   content: '';
   pointer-events: none;
@@ -203,7 +203,7 @@ main{
 }
 
 .history-record-messages ul li a:hover::after {
-  background: linear-gradient(90deg, hsla(220, 4%, 13%, 0) 0%, hsla(220, 4%, 13%, 0.5) 50%, hsla(220, 4%, 13%, 1) 100%);
+  background: linear-gradient(90deg, rgba(32, 33, 34, 0) 0%, rgba(32, 33, 34, 0.5) 50%, rgb(32, 33, 34) 100%);
   bottom: 0;
   content: '';
   position: absolute;
@@ -243,7 +243,7 @@ main{
 }
 
 .user-name h3{
-  color: hsl(0, 0%, 100%);
+  color: rgb(255, 255, 255);
   font-family: 'SoehneBuch', sans-serif;
   font-size: 0.9rem;
   margin: 0;
@@ -270,7 +270,7 @@ main{
 
 .welcome-logo{
   align-items: center;
-  background-color: hsl(0, 0%, 100%);
+  background-color: rgb(255, 255, 255);
   border-radius: 50%;
   display: flex; 
   height: 4rem;
@@ -280,13 +280,13 @@ main{
 }
 
 .welcome-logo svg{
-  color: hsl(0, 0%, 0%);
+  color: rgb(0, 0, 0);
   height: 2.5rem;
   width: 2.5rem;
 }
 
 .welcome-title h1{
-  color: hsl(0, 0%, 100%);
+  color: rgb(255, 255, 255);
   font-family: "SoehneBuch", sans-serif;
   font-size: 1.3rem;
   margin: 0;
@@ -308,7 +308,7 @@ main{
 }
 
 .example{
-  border: 1px solid hsl(0, 0%, 40%);
+  border: 1px solid rgb(102, 102, 102);
   border-radius: 0.5rem;
   display: flex;
   flex-direction: column;
@@ -320,12 +320,12 @@ main{
 }
 
 .example:hover{
-  background-color: hsl(236, 10%, 28%);
+  background-color: rgb(64, 65, 79);
   cursor: pointer;
 }
 
 .example-title h2{
-  color: hsla(0, 0%, 100%, 0.7);
+  color: rgba(255, 255, 255, 0.7);
   font-family: 'SoehneBuch', Arial;
   font-size: 0.8rem;
   font-weight: 400;
@@ -333,7 +333,7 @@ main{
 }
 
 .example-description p{
-  color: hsl(0, 0%, 100%);
+  color: rgb(255, 255, 255);
   font-family: 'SoehneBuch', Arial;
   font-size: 0.75em;
   margin: 0;
@@ -345,7 +345,7 @@ main{
 
 .example .example-send{
   align-items: center;
-  background-color: hsla(236, 10%, 28%, 0.911);
+  background-color: rgba(64, 65, 79, 0.911);
   display: flex;
   height: 90%;
   justify-content: center;
@@ -361,7 +361,7 @@ main{
 }
 
 .example-send-button{
-  background-color: hsl(235, 11%, 23%);
+  background-color: rgb(52, 53, 65);
   border-radius: 0.3rem;
   padding: 0.25rem;
 }
@@ -413,20 +413,20 @@ main{
 }
 
 .message-input .attach-button button{
-  background-color: hsl(0, 0%, 100%, 0);
+  background-color: rgba(255, 255, 255, 0);
   border: none;
   border-radius: 0.5rem;
   cursor: pointer;
 }
 
 .message-input .attach-button svg{
-  color: hsl(0, 0%, 100%);
+  color: rgb(255, 255, 255);
   width: 1.3rem;
 }
 
 .message-input form{
   align-items: center;
-  border: 1px solid hsl(0, 0%, 40%);
+  border: 1px solid rgb(102, 102, 102);
   border-radius: 1rem;
   display: flex;
   justify-content: center;
@@ -439,7 +439,7 @@ main{
 }
 
 .message-input form .form-element textarea{
-  background-color: hsl(235, 11%, 23%);
+  background-color: rgb(52, 53, 65);
   border: none;
   color: hsl(0, 0%, 100%);
   font-family: 'SoehneBuch', Arial;
@@ -451,7 +451,7 @@ main{
 }
 
 .message-input form .form-element textarea::placeholder{
-  color: hsl(0, 0%, 100%, 0.5);
+  color: rgba(255, 255, 255, 0.5);
   font-weight: 300;
 }
 
@@ -461,7 +461,7 @@ main{
 
 .message-input .send-button button{
   align-items: center;
-  background-color: hsl(235, 7%, 31%);
+  background-color: rgb(74, 74, 85);
   border: none;
   border-radius: 0.5rem;
   display: flex;
@@ -469,7 +469,7 @@ main{
 }
 
 .message-input .send-button svg{
-  color:hsl(0, 0%, 0%, 0.3);
+  color:rgba(0, 0, 0, 0.3);
   width: 1.3rem;
 }
 
@@ -479,7 +479,7 @@ main{
 }
 
 .message-input .send-button.active svg{
-  color:hsl(0, 0%, 0%);
+  color:rgb(0, 0, 0);
 }
 
 .send-button .tooltiptext{
