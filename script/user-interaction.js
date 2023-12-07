@@ -18,6 +18,8 @@ class UserInteraction extends HTMLElement {
           flex-direction: column;
           gap: 1rem;
           padding: 1.5rem 0;
+          width: 60%;
+          margin: 0 auto;
         }
 
         .examples{
