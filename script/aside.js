@@ -9,6 +9,12 @@ class Aside extends HTMLElement {
       document.addEventListener('toggleAside', (event => {
         this.toggleAside();
       }));
+      document.addEventListener('darkAside', (event => {
+        this.darkAside();
+      }));
+      document.addEventListener('clearAside', (event => {
+        this.clearAside();
+      }));
       this.render()
     }
   
@@ -31,6 +37,9 @@ class Aside extends HTMLElement {
           min-width: 235px;
           max-width: 235px;
         }
+        aside.dark {
+          filter: brightness(0.5);
+        }
       </style>
       <aside class="active">
         <slot name="new-conversations"></slot>
@@ -41,8 +50,13 @@ class Aside extends HTMLElement {
 
     }
     toggleAside() {
-      console.log("hola")
-      this.shadow.querySelector('aside').classList.toggle('active')
+      this.shadow.querySelector('aside').classList.toggle('active');
+    }
+    darkAside() {
+      this.shadow.querySelector('aside').classList.add('dark');
+    }
+    clearAside() {
+      this.shadow.querySelector('aside').classList.remove('dark');
     }
   }
   

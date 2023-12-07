@@ -73,6 +73,12 @@ class ToggleAside extends HTMLElement {
         document.dispatchEvent(new CustomEvent('toggleAside'));
         this.shadow.querySelector('.toggle-aside').classList.toggle('active');
       });
+      button.addEventListener('mouseenter', () => {
+        document.dispatchEvent(new CustomEvent('darkAside'));
+      });
+      button.addEventListener('mouseleave', () => {
+        document.dispatchEvent(new CustomEvent('clearAside'));
+      });
     }
   }
   
