@@ -16,7 +16,7 @@ class Aside extends HTMLElement {
       this.shadow.innerHTML =
       /*html*/`
       <style>
-        aside{
+        aside {
           height: 100%;
           position: relative;
           background-color: rgb(0, 0, 0);
@@ -25,6 +25,7 @@ class Aside extends HTMLElement {
           overflow: hidden;
           transition: 0.1s ease-in;
           transition-property: filter max-width min-width;
+          z-index: 500;
         }
         aside.active {
           min-width: 235px;
