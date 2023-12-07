@@ -23,11 +23,8 @@ class Aside extends HTMLElement {
           min-width: 0px;
           max-width: 0px;
           overflow: hidden;
-          transition: filter 0.1s ease-in;
-        }
-        aside:has(close-aside-component:hover) {
-          filter: brightness(0.5);
-          transition: filter 0.1s ease-in;
+          transition: 0.1s ease-in;
+          transition-property: filter max-width min-width;
         }
         aside.active {
           min-width: 235px;
@@ -35,9 +32,9 @@ class Aside extends HTMLElement {
         }
       </style>
       <aside class="active">
-        <new-conversations-component></new-conversations-component>
-        <history-component></history-component>
-        <user-component></user-component>
+        <slot name="new-conversations"></slot>
+        <slot name="history"></slot>
+        <slot name="user"></slot>
       </aside>
       `
 

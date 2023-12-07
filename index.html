@@ -18,7 +18,11 @@
     <script type="module" src="script/app.js"></script>
   </head>
   <body>
-    <aside-component></aside-component>
+    <aside-component>
+      <new-conversations-component slot="new-conversations"></new-conversations-component>
+      <history-component slot="history"></history-component>
+      <user-component slot="user"></user-component>
+    </aside-component>
     <main>
       <toggle-aside-component></toggle-aside-component>
       <conversation-component></conversation-component>
