@@ -117,44 +117,6 @@ main{
   visibility: visible;
 }
 
-.user{
-  bottom: 0;
-  cursor: pointer;
-  display: flex;
-  gap: 0.5rem;
-  padding: 1rem;
-  position: absolute;
-}
-
-.user-logo{
-  align-items: center;
-  border-radius: 50%;
-  display: flex;
-  height: 2rem;
-  justify-content: center;
-  overflow: hidden;
-  width: 2rem;
-}
-
-.user-logo img{
-  width: 100%;
-}
-
-.user-name{
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-}
-
-.user-name h3{
-  color: rgb(255, 255, 255);
-  font-family: 'SoehneBuch', sans-serif;
-  font-size: 0.9rem;
-  margin: 0;
-  overflow: hidden;
-  white-space: nowrap;
-}
-
 .conversation{
   align-items: center;
   display: flex;
