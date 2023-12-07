@@ -1,4 +1,4 @@
-class CloseAside extends HTMLElement {
+class ToggleAside extends HTMLElement {
 
     constructor () {
       super()
@@ -13,12 +13,12 @@ class CloseAside extends HTMLElement {
       this.shadow.innerHTML =
       /*html*/`
       <style>
-        .close-aside {
+        .toggle-aside {
           height: 50px;
           position: absolute;
           top: 0;
           bottom: 0;
-          right: -20px;
+          left: 10px;
           display: flex;
           align-items: center;
           margin: auto;
@@ -36,7 +36,7 @@ class CloseAside extends HTMLElement {
           transition-property: transform background-color;
           background-color: rgb(98, 99, 109);
         }
-        .close-aside:hover .line {
+        .toggle-aside:hover .line {
           background-color: rgb(236, 236, 241);
         }
         .line:nth-child(1) {
@@ -48,14 +48,20 @@ class CloseAside extends HTMLElement {
           transform: translateY(-10%);
           margin-top: -10%;
         }
-        .close-aside:hover .line:nth-child(1) {
+        .toggle-aside:hover .line:nth-child(1) {
           transform: translateY(10%) rotate(20deg);
         }
-        .close-aside:hover .line:nth-child(2) {
+        .toggle-aside:hover .line:nth-child(2) {
           transform: translateY(-10%) rotate(-20deg);
         }
+        .toggle-aside.active .line:nth-child(1) {
+          transform: translateY(10%) rotate(-20deg);
+        }
+        .toggle-aside.active .line:nth-child(2) {
+          transform: translateY(-10%) rotate(20deg);
+        }
       </style>
-        <div class="close-aside">
+        <div class="toggle-aside">
         <button class="arrow-icon">
             <div class="line"></div>
             <div class="line"></div>
@@ -64,9 +70,10 @@ class CloseAside extends HTMLElement {
       `
       let button = this.shadow.querySelector('button');
       button.addEventListener('click', () => {
-        document.dispatchEvent(new CustomEvent('closeAside'));
+        document.dispatchEvent(new CustomEvent('toggleAside'));
+        this.shadow.querySelector('.toggle-aside').classList.toggle('active');
       });
     }
   }
   
-  customElements.define('close-aside-component', CloseAside);
+  customElements.define('toggle-aside-component', ToggleAside);
