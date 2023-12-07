@@ -12,11 +12,16 @@ body{
 }
 
 aside{
+  position: relative;
   background-color: rgb(0, 0, 0);
   max-width: 235px;
   min-width: 235px;
+  transition: filter 0.1s ease-in;
 }
-
+aside:has(close-aside-component:hover) {
+  filter: brightness(0.5);
+  transition: filter 0.1s ease-in;
+}
 main{
   align-items: center;
   background-color: rgb(52, 53, 65);
