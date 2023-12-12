@@ -14,22 +14,22 @@ class User extends HTMLElement {
       /*html*/`
       <style>
         .user{
+          position: absolute;
           bottom: 0;
-          cursor: pointer;
           display: flex;
           gap: 0.5rem;
           padding: 1rem;
-          position: absolute;
+          cursor: pointer;
         }
 
         .user-logo{
-          align-items: center;
-          border-radius: 50%;
-          display: flex;
-          height: 2rem;
-          justify-content: center;
-          overflow: hidden;
           width: 2rem;
+          height: 2rem;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          overflow: hidden;
+          border-radius: 50%;
         }
 
         .user-logo img{
@@ -43,11 +43,11 @@ class User extends HTMLElement {
         }
 
         .user-name h3{
+          overflow: hidden;
+          margin: 0;
           color: rgb(255, 255, 255);
           font-family: 'SoehneBuch', sans-serif;
           font-size: 0.9rem;
-          margin: 0;
-          overflow: hidden;
           white-space: nowrap;
         }
       </style>

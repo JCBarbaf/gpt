@@ -18,11 +18,11 @@ class NewConversations extends HTMLElement {
         }
 
         .new-conversation{
-          border: 1px solid rgba(32, 33, 34, 0);
-          border-radius: 0.3rem;
           display: flex;
           gap: 0.5rem;
           padding: 0.3rem;
+          border: 1px solid rgba(32, 33, 34, 0);
+          border-radius: 0.3rem;
         }
 
         .new-conversation:hover{
@@ -32,14 +32,14 @@ class NewConversations extends HTMLElement {
         }
 
         .new-conversation-model-icon{
+          width: 1.5rem;
+          height: 1.5rem;
+          display: flex;
+          justify-content: center;
           align-items: center;
+          overflow: hidden;
           background-color: rgb(255, 255, 255);
           border-radius: 50%;
-          display: flex;
-          height: 1.5rem;
-          justify-content: center;
-          overflow: hidden;
-          width: 1.5rem;
         }
 
         .new-conversation-model-icon svg{
@@ -47,8 +47,8 @@ class NewConversations extends HTMLElement {
         }
 
         .new-conversation-model-name{
-          align-self: center;
           flex: 1;
+          align-self: center;
         }
 
         .new-conversation-model-name span{
@@ -58,9 +58,9 @@ class NewConversations extends HTMLElement {
         }
 
         .new-conversation-model-start{
-          align-self: center;
-          display: inline-block;
           position: relative;
+          display: inline-block;
+          align-self: center;
         }
 
         .new-conversation-model-start svg{
@@ -72,37 +72,37 @@ class NewConversations extends HTMLElement {
         }
 
         .new-conversation-model-start .tooltiptext {
-          background-color: black;
-          border-radius: 0.5rem;
-          color: hsl(0, 0%, 100%);
-          font-family: 'SoehneBuch', sans-serif;
-          font-size: 0.8rem;
+          width: 100px;
+          position: absolute;
+          visibility: hidden;
+          opacity: 0;
           margin-top: -0.5rem;
           margin-left: 3rem;
-          opacity: 0;
           padding: 0.5rem 0;
+          background-color: black;
+          color: hsl(0, 0%, 100%);
+          border-radius: 0.5rem;
           pointer-events: none; 
-          position: absolute;
+          font-family: 'SoehneBuch', sans-serif;
+          font-size: 0.8rem;
           text-align: center;
           transition: opacity 0.3s;
-          visibility: hidden;
-          width: 100px;
           z-index: 1001;
         }
 
         .new-conversation-model-start .tooltiptext::after {
-          border-color: transparent rgb(0, 0, 0) transparent transparent;
-          border-style: solid;
-          border-width: 5px;
           content: " ";
-          left: -10px;
           position: absolute;
           top: 35%;
+          left: -10px;
+          border-width: 5px;
+          border-style: solid;
+          border-color: transparent rgb(0, 0, 0) transparent transparent;
         }
 
         .new-conversation-model-start:hover .tooltiptext {
-          opacity: 1;
           visibility: visible;
+          opacity: 1;
         }
       </style>
       <section class="new-conversations">
@@ -116,10 +116,14 @@ class NewConversations extends HTMLElement {
           <div class="new-conversation-model-start">
             <span class="tooltiptext">Nuevo chat</span>
             <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="icon-md"><path fill-rule="evenodd" clip-rule="evenodd" d="M16.7929 2.79289C18.0118 1.57394 19.9882 1.57394 21.2071 2.79289C22.4261 4.01184 22.4261 5.98815 21.2071 7.20711L12.7071 15.7071C12.5196 15.8946 12.2652 16 12 16H9C8.44772 16 8 15.5523 8 15V12C8 11.7348 8.10536 11.4804 8.29289 11.2929L16.7929 2.79289ZM19.7929 4.20711C19.355 3.7692 18.645 3.7692 18.2071 4.2071L10 12.4142V14H11.5858L19.7929 5.79289C20.2308 5.35499 20.2308 4.64501 19.7929 4.20711ZM6 5C5.44772 5 5 5.44771 5 6V18C5 18.5523 5.44772 19 6 19H18C18.5523 19 19 18.5523 19 18V14C19 13.4477 19.4477 13 20 13C20.5523 13 21 13.4477 21 14V18C21 19.6569 19.6569 21 18 21H6C4.34315 21 3 19.6569 3 18V6C3 4.34314 4.34315 3 6 3H10C10.5523 3 11 3.44771 11 4C11 4.55228 10.5523 5 10 5H6Z" fill="currentColor"></path></svg>
-          </div>
+        </div>
         </div>
       </section>
       `
+      let newConversationButton = this.shadow.querySelector('.new-conversation-model-start');
+      newConversationButton.addEventListener('click', () => {
+        document.dispatchEvent(new CustomEvent('newChat'));
+      });
     }
   }
   

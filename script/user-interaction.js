@@ -6,6 +6,9 @@ class UserInteraction extends HTMLElement {
     }
   
     connectedCallback () {
+      document.addEventListener('newChat', (event => {
+        this.render();
+      }));
       this.render()
     }
   
@@ -13,119 +16,16 @@ class UserInteraction extends HTMLElement {
       this.shadow.innerHTML =
       /*html*/`
       <style>
+        :host {
+          width: 60%;
+        }
         .user-interaction{
           display: flex;
           flex-direction: column;
+          justify-content: flex-end;
+          align-items: flex-start;
           gap: 1rem;
           padding: 1.5rem 0;
-        }
-
-        .examples{
-          display: flex;
-          flex-wrap: wrap;
-          gap: 0.5rem;
-          justify-content: center;
-        }
-
-        .example{
-          border: 1px solid rgb(102, 102, 102);
-          border-radius: 0.5rem;
-          display: flex;
-          flex-direction: column;
-          gap: 0.2rem;
-          justify-content: center;
-          padding: 0.5rem 0.75rem;
-          position: relative;
-          width: 45%;
-        }
-
-        .example:hover{
-          background-color: rgb(64, 65, 79);
-          cursor: pointer;
-        }
-
-        .example-title h2{
-          color: rgba(255, 255, 255, 0.7);
-          font-family: 'SoehneBuch', Arial;
-          font-size: 0.8rem;
-          font-weight: 400;
-          margin: 0;
-        }
-
-        .example-description p{
-          color: rgb(255, 255, 255);
-          font-family: 'SoehneBuch', Arial;
-          font-size: 0.75em;
-          margin: 0;
-          opacity: 0.5;
-          overflow: hidden;
-          text-overflow: ellipsis;
-          white-space: nowrap;
-        }
-
-        .example .example-send{
-          align-items: center;
-          background-color: rgba(64, 65, 79, 0.911);
-          display: flex;
-          height: 90%;
-          justify-content: center;
-          opacity: 0;
-          position: absolute;
-          right: 0;
-          width: 10%;
-          z-index: 1000;
-        }
-
-        .example:hover .example-send{
-          opacity: 1;
-        }
-
-        .example-send-button{
-          background-color: rgb(52, 53, 65);
-          border-radius: 0.3rem;
-          padding: 0.25rem;
-        }
-
-        .example-send-button svg{
-          height: 0.8rem;
-          width: 0.8rem;
-        }
-
-        .example-send-button svg path{
-          fill: white;
-        }
-
-        .example-send-button .tooltiptext{
-          background-color: black;
-          border-radius: 0.5rem;
-          color: #fff;
-          font-family: 'SoehneBuch', sans-serif;
-          font-size: 0.8rem;
-          margin-top: -3.5rem;
-          margin-left: -5rem;
-          opacity: 0;
-          padding: 0.5rem 0;
-          pointer-events: none; 
-          position: absolute;
-          text-align: center;
-          transition: opacity 0.3s;
-          width: 150px;
-          z-index: 1001;
-        }
-
-        .example-send-button .tooltiptext::after {
-          border-color: rgb(0, 0, 0) transparent transparent transparent;
-          border-style: solid;
-          border-width: 5px;
-          content: "";
-          left: 45%;
-          position: absolute;
-          top: 100%;   
-        }
-
-        .example-send-button:hover .tooltiptext{
-          opacity: 1;
-          visibility: visible;
         }
 
         .message-input{
@@ -140,34 +40,34 @@ class UserInteraction extends HTMLElement {
         }
 
         .message-input .attach-button svg{
-          color: rgb(255, 255, 255);
           width: 1.3rem;
+          color: rgb(255, 255, 255);
         }
 
         .message-input form{
-          align-items: center;
-          border: 1px solid rgb(102, 102, 102);
-          border-radius: 1rem;
           display: flex;
           justify-content: center;
+          align-items: center;
           padding: 0.5rem;
+          border: 1px solid rgb(102, 102, 102);
+          border-radius: 1rem;
         }
 
         .message-input form .form-element{
+          width: 90%;
           height: max-content;
-          width: 90%
         }
 
         .message-input form .form-element textarea{
+          width: 100%;
+          max-height: 5rem;
+          height: 1.2rem;
           background-color: rgb(52, 53, 65);
-          border: none;
           color: hsl(0, 0%, 100%);
+          border: none;
           font-family: 'SoehneBuch', Arial;
           font-size: 0.9rem;
-          height: 1.2rem;
-          max-height: 5rem;
           resize: none;
-          width: 100%;
         }
 
         .message-input form .form-element textarea::placeholder{
@@ -180,17 +80,17 @@ class UserInteraction extends HTMLElement {
         }
 
         .message-input .send-button button{
+          display: flex;
           align-items: center;
+          padding: 0.1rem 0.2rem;
           background-color: rgb(74, 74, 85);
           border: none;
           border-radius: 0.5rem;
-          display: flex;
-          padding: 0.1rem 0.2rem;
         }
 
         .message-input .send-button svg{
-          color:rgba(0, 0, 0, 0.3);
           width: 1.3rem;
+          color:rgba(0, 0, 0, 0.3);
         }
 
         .message-input .send-button.active button{
@@ -203,93 +103,40 @@ class UserInteraction extends HTMLElement {
         }
 
         .send-button .tooltiptext{
-          background-color: black;
-          border-radius: 0.5rem;
-          color: #fff;
-          font-family: 'SoehneBuch', sans-serif;
-          font-size: 0.8rem;
+          width: 120px;
+          position: absolute;
+          opacity: 0;
           margin-top: -5rem;
           margin-left: -3rem;
-          opacity: 0;
           padding: 0.5rem 0;
+          background-color: black;
+          color: #fff;
+          border-radius: 0.5rem;
           pointer-events: none; 
-          position: absolute;
+          font-family: 'SoehneBuch', sans-serif;
+          font-size: 0.8rem;
           text-align: center;
           transition: opacity 0.3s;
-          width: 120px;
           z-index: 1001;
         }
 
         .send-button .tooltiptext::after {
+          content: "";
+          position: absolute;
+          top: 100%;   
+          left: 45%;
           border-width: 5px;
           border-style: solid;
           border-color: rgb(0, 0, 0) transparent transparent transparent;
-          content: "";
-          left: 45%;
-          position: absolute;
-          top: 100%;   
         }
 
         .send-button:hover .tooltiptext{
-          opacity: 1;
           visibility: visible;
+          opacity: 1;
         }
       </style>
       <div class="user-interaction">
-        <section class="examples">
-          <article class="example">
-            <div class="example-title">
-              <h2>Comparar principios del diseño</h2>
-            </div>
-            <div class="example-description">
-              <p>para convertir una fecha al día de la semana correspo...</p>
-            </div>
-            <div class="example-send">
-              <div class="example-send-button">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13,20H11V8L5.5,13.5L4.08,12.08L12,4.16L19.92,12.08L18.5,13.5L13,8V20Z" /></svg>  
-                <span class="tooltiptext">Haz click para enviar</span>         
-            </div>
-          </article>
-          <article class="example">
-            <div class="example-title">
-              <h2>Comparar técnicas de narración</h2>
-            </div>
-            <div class="example-description">
-              <p>en novelas y en películas</p>
-            </div>
-            <div class="example-send">
-              <div class="example-send-button">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13,20H11V8L5.5,13.5L4.08,12.08L12,4.16L19.92,12.08L18.5,13.5L13,8V20Z" /></svg> 
-                <span class="tooltiptext">Haz click para enviar</span>                   
-            </div>
-          </article>
-          <article class="example">
-            <div class="example-title">
-              <h2>Generar nombres</h2>
-            </div>
-            <div class="example-description">
-              <p>para mi equipo de fútbol de fantasía con un tema de rasputin</p>
-            </div>
-            <div class="example-send">
-              <div class="example-send-button">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13,20H11V8L5.5,13.5L4.08,12.08L12,4.16L19.92,12.08L18.5,13.5L13,8V20Z" /></svg>  
-                <span class="tooltiptext">Haz click para enviar</span>                  
-            </div>
-          </article>
-          <article class="example">
-            <div class="example-title">
-              <h2>Sugiere conceptos</h2>
-            </div>
-            <div class="example-description">
-              <p>para un juego de arcade de estilo retro</p>
-            </div>
-            <div class="example-send">
-              <div class="example-send-button">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13,20H11V8L5.5,13.5L4.08,12.08L12,4.16L19.92,12.08L18.5,13.5L13,8V20Z" /></svg>  
-                <span class="tooltiptext">Haz click para enviar</span>                  
-            </div>
-          </article>
-        </section>
+        <slot name="examples"></slot>
         <section class="message-input">
           <form>
             <div class="attach-button">
@@ -323,6 +170,12 @@ class UserInteraction extends HTMLElement {
           this.deactivateSend();
         }
       });
+      let sendButton = this.shadow.querySelector('.send-button');
+      sendButton.addEventListener('click', (event) => {
+        console.log('UwU')
+        event.preventDefault();
+        document.dispatchEvent(new CustomEvent('startChat'));
+      });    
     }
     activateSend() {
       let sendButton = this.shadow.querySelector('.send-button');

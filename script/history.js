@@ -14,16 +14,16 @@ class History extends HTMLElement {
       /*html*/`
       <style>
         .history{
+          width: 100%;
           max-height: 80vh;
           overflow-x: hidden; 
           overflow-y: auto;
           padding: 1rem 0;
-          width: 100%;
         }
 
         .history::-webkit-scrollbar{
-          background: transparent; 
           width: 0;
+          background: transparent; 
         }
 
         .history:hover::-webkit-scrollbar{
@@ -57,39 +57,39 @@ class History extends HTMLElement {
         .history-record-messages ul{
           display: flex;
           flex-direction: column;
-          list-style: none;
           margin: 0;
           padding: 0;
+          list-style: none;
         }
 
         .history-record-messages ul li{
-          margin: 0 0.5rem;
           max-width: 85%;
+          margin: 0 0.5rem;
         }
 
         .history-record-messages ul li a{
-          color: rgb(255, 255, 255);
+          width: 100%;
+          position: relative;
           display: inline-block;
-          font-family: Arial, Helvetica, sans-serif; 
-          font-size: 0.8rem;
           overflow: hidden;
           padding: 0.5rem;
-          position: relative;
+          color: rgb(255, 255, 255);
+          font-family: Arial, Helvetica, sans-serif; 
+          font-size: 0.8rem;
           text-decoration: none;
           white-space: nowrap;
-          width: 100%;
           z-index: 0;
         }
 
         .history-record-messages ul li a::after {
-          background: linear-gradient(90deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.502) 50%, rgb(0, 0, 0) 100%);
-          bottom: 0;
           content: '';
-          pointer-events: none;
-          position: absolute;
-          right: 0;
-          top: 0;
           width: 2rem; 
+          position: absolute;
+          top: 0;
+          bottom: 0;
+          right: 0;
+          background: linear-gradient(90deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.502) 50%, rgb(0, 0, 0) 100%);
+          pointer-events: none;
           z-index: 1000;
         } 
 
@@ -99,13 +99,13 @@ class History extends HTMLElement {
         }
 
         .history-record-messages ul li a:hover::after {
-          background: linear-gradient(90deg, rgba(32, 33, 34, 0) 0%, rgba(32, 33, 34, 0.5) 50%, rgb(32, 33, 34) 100%);
-          bottom: 0;
           content: '';
+          width: 5rem; 
           position: absolute;
           top: 0;
+          bottom: 0;
           right: 0;
-          width: 5rem; 
+          background: linear-gradient(90deg, rgba(32, 33, 34, 0) 0%, rgba(32, 33, 34, 0.5) 50%, rgb(32, 33, 34) 100%);
           z-index: 1000;
         }
       </style>

@@ -6,6 +6,12 @@ class Conversation extends HTMLElement {
     }
   
     connectedCallback () {
+      document.addEventListener('startChat', (event => {
+        this.clear();
+      }));
+      document.addEventListener('newChat', (event => {
+        this.render();
+      }));
       this.render()
     }
   
@@ -14,43 +20,43 @@ class Conversation extends HTMLElement {
       /*html*/`
       <style>
         .conversation{
-          align-items: center;
+          min-height: 75vh;
           display: flex;
           flex-direction: column;
           justify-content: center;
-          min-height: 75vh;
+          align-items: center;
         }
 
         .welcome{
-          align-items: center;
+          width: 100%;
           display: flex;
           flex-direction: column;
+          align-items: center;
           gap: 0.5rem;
-          width: 100%;
         }
 
         .welcome-logo{
+          width: 4rem;
+          height: 4rem;
+          position: relative;
+          display: flex; 
+          justify-content: center;
           align-items: center;
           background-color: rgb(255, 255, 255);
           border-radius: 50%;
-          display: flex; 
-          height: 4rem;
-          justify-content: center;
-          position: relative;
-          width: 4rem;
         }
 
         .welcome-logo svg{
-          color: rgb(0, 0, 0);
-          height: 2.5rem;
           width: 2.5rem;
+          height: 2.5rem;
+          color: rgb(0, 0, 0);
         }
 
         .welcome-title h1{
+          margin: 0;
           color: rgb(255, 255, 255);
           font-family: "SoehneBuch", sans-serif;
           font-size: 1.3rem;
-          margin: 0;
         }
       </style>
       <div class="conversation">
@@ -64,6 +70,10 @@ class Conversation extends HTMLElement {
         </section>
       </div>
       `
+    }
+    clear(){
+      console.log('hola')
+      this.shadow.innerHTML = ""
     }
   }
   
