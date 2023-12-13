@@ -3,6 +3,7 @@ class Chat extends HTMLElement {
     constructor () {
       super()
       this.shadow = this.attachShadow({ mode: 'open' })
+      this.isNewChat = true;
     }
   
     connectedCallback () {
@@ -10,14 +11,18 @@ class Chat extends HTMLElement {
         this.chatHandler(event.detail.prompt);
       }));
       document.addEventListener('newChat', (event => {
+        this.isNewChat = true;
         this.render();
       }));
       this.render()
     };
     chatHandler(prompt) {
-      this.clear();
-      this.createUserMessage(prompt);
-      this.createGPTMessage();
+      if (this.isNewChat) {
+        this.clear();
+        this.isNewChat = false;
+      }
+      this.createMessage('images/user-avatar.png','Tú',prompt);
+      this.createMessage('images/chatDPM.png','ChatDPM','Para k kieres saver eso jajaja salu2');
     };
     render () {
       this.shadow.innerHTML =
@@ -25,25 +30,51 @@ class Chat extends HTMLElement {
       <style>
         :host {
           width: 60%;
+          flex: 1;
         }
         .chat{
-          min-height: 75vh;
-          max-height: 75vh;
+          min-height: 65vh;
+          max-height: 80vh;
+          position: relative;
           display: flex;
           flex-direction: column;
-          justify-content: center;
+          justify-content: flex-start;
           align-items: center;
           overflow: auto;
+          padding-top: 5%;
           font-family: "SoehneBuch", sans-serif;
           color: rgb(255, 255, 255);
         }
+        .chat::-webkit-scrollbar{
+          width: 0;
+          background: transparent; 
+        }
 
+        .chat:hover::-webkit-scrollbar{
+          width: 5px; 
+        }
+
+        .chat:hover::-webkit-scrollbar-thumb{
+          background-color: rgb(135, 135, 135); 
+          border-radius: 1rem;
+        }
+
+        .chat:hover::-webkit-scrollbar-thumb:hover{
+          background-color: rgb(199, 199, 199); 
+        }
         .welcome{
-          width: 100%;
+          width: 50%;
+          height: 15%;
+          position: absolute;
+          top: 0;
+          bottom: 0;
+          left: 0;
+          right: 0;
           display: flex;
           flex-direction: column;
           align-items: center;
           gap: 0.5rem;
+          margin: auto;
         }
 
         .welcome-logo{
@@ -109,41 +140,42 @@ class Chat extends HTMLElement {
       `
     }
     clear() {
-      this.shadow.innerHTML = ""
+      let chatContainer = this.shadow.querySelector('.chat');
+      chatContainer.innerHTML = ""
     }
-    createUserMessage(prompt) {
-      console.log(prompt);
-      // <div class="message-container">
-      //   <div class="profile-picture">
-      //     <img src="images/user-avatar.png">
+    createMessage(profileSrc, speakerName, messageText) {
+      // ! forma alternativa
+      // let chatContainer = this.shadow.querySelector('.chat');
+      // chatContainer.innerHTML += `
+      //   <div class="message-container">
+      //     <div class="profile-picture">
+      //       <img src="images/user-avatar.png">
+      //     </div>
+      //     <div class="message">
+      //       <h3>Tú</h3>
+      //       <p>${prompt}</p>
+      //     </div>
       //   </div>
-      //   <div class="message">
-      //     <h3>Tú</h3>
-      //     <p>Es la mayonesa un instrumento?</p>
-      //   </div>
-      // </div>
+      // `;
       let chatContainer = this.shadow.querySelector('.chat');
       let messageContainer = document.createElement('div');
-      messageContainer.classlist.add('message-container');
+      messageContainer.classList.add('message-container');
       let profilePictureContainer = document.createElement('div');
-      messageContainer.classlist.add('profile-picture');
+      messageContainer.classList.add('profile-picture');
       let profilePicture = document.createElement('img');
-      profilePicture.src = "images/user-avatar.png";
+      profilePicture.src = profileSrc;
       profilePictureContainer.appendChild(profilePicture);
       messageContainer.appendChild(profilePictureContainer);
       let message = document.createElement('div');
-      message.classlist.add('message');
+      message.classList.add('message');
       let speaker = document.createElement('h3');
-      speaker.innerHTML= "Tú";
+      speaker.innerHTML= speakerName;
       let messageContent = document.createElement('p');
-      messageContent.innerHTML = "prompt";
+      messageContent.innerHTML = messageText;
       message.appendChild(speaker);
       message.appendChild(messageContent);
       messageContainer.appendChild(message);
       chatContainer.appendChild(messageContainer);
-    }
-    createGPTMessage() {
-
     }
   }
   
