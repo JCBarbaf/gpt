@@ -184,7 +184,6 @@ class Examples extends HTMLElement {
       `
     }
     clear(){
-      console.log('hola')
       this.shadow.innerHTML = ""
     }
   }

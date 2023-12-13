@@ -6,6 +6,9 @@ class UserInteraction extends HTMLElement {
     }
   
     connectedCallback () {
+      document.addEventListener('startChat', (event => {
+        this.render();
+      }));
       document.addEventListener('newChat', (event => {
         this.render();
       }));
@@ -172,9 +175,12 @@ class UserInteraction extends HTMLElement {
       });
       let sendButton = this.shadow.querySelector('.send-button');
       sendButton.addEventListener('click', (event) => {
-        console.log('UwU')
         event.preventDefault();
-        document.dispatchEvent(new CustomEvent('startChat'));
+        document.dispatchEvent(new CustomEvent('startChat',{
+          detail: {
+            prompt: userInput.value,
+          }
+        }));
       });    
     }
     activateSend() {
