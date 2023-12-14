@@ -33,8 +33,8 @@ class Chat extends HTMLElement {
           flex: 1;
         }
         .chat{
-          min-height: 65vh;
-          max-height: 80vh;
+          height: 100%;
+          max-height: 75vh;
           position: relative;
           display: flex;
           flex-direction: column;
@@ -45,13 +45,12 @@ class Chat extends HTMLElement {
           font-family: "SoehneBuch", sans-serif;
           color: rgb(255, 255, 255);
         }
-        .chat::-webkit-scrollbar{
-          width: 0;
-          background: transparent; 
+        .chat:hover {
+          flex-direction: column;
         }
-
-        .chat:hover::-webkit-scrollbar{
+        .chat::-webkit-scrollbar{
           width: 5px; 
+          background: transparent; 
         }
 
         .chat:hover::-webkit-scrollbar-thumb{
@@ -179,6 +178,7 @@ class Chat extends HTMLElement {
       //     </div>
       //   </div>
       // `;
+      let isManuallyScrolled = false;
       let chatContainer = this.shadow.querySelector('.chat');
       let messageContainer = document.createElement('div');
       messageContainer.classList.add('message-container');
@@ -195,6 +195,7 @@ class Chat extends HTMLElement {
       let messageContent = document.createElement('p');
       if (messageText) {
         messageContent.innerHTML = messageText;
+        
       } else {
         let dot = document.createElement('span');
         let textContent = document.createElement('span');
@@ -203,29 +204,33 @@ class Chat extends HTMLElement {
         messageContent.appendChild(dot);
         setTimeout(() => {
           let message = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam luctus cursus justo, ac laoreet quam interdum ut. Nullam vitae tortor a nulla consequat porta ut eu odio. Integer condimentum tincidunt sollicitudin. Nunc non leo ut mauris cursus gravida ut non elit. Nulla diam nisl, accumsan sed vulputate a, ultrices sed ex. Sed ultrices orci nisi, vel aliquet quam ornare sed. Nam iaculis sem mauris, sed sodales ipsum mattis at. Sed varius facilisis hendrerit. Aenean et quam fermentum turpis egestas vehicula sed a urna. Nulla mollis blandit arcu quis placerat. Etiam vel est interdum, aliquet turpis ac, rhoncus sem. Phasellus feugiat arcu eros, vitae egestas eros tempus eget. Proin rutrum augue id convallis vulputate. In finibus suscipit diam, non auctor mi commodo et. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nam vel ante non enim ullamcorper gravida.';
-          this.messageAnimation(textContent, message, 0, dot);
+          let messageIndex = 0;
+          let messageAnimation = () => {
+            let messageArray = message.split(" ");
+            if (messageIndex < messageArray.length) {
+              textContent.innerHTML += `${messageArray[messageIndex]} `;
+              messageIndex++;
+              if (!isManuallyScrolled) {
+                chatContainer.scrollTop = chatContainer.scrollHeight;
+              }
+              setTimeout(messageAnimation, 100);
+            } else {
+              dot.remove();
+            }
+          }
+          messageAnimation();
         }, 3000);
+      }
+      if (!isManuallyScrolled) {
+        chatContainer.scrollTop = chatContainer.scrollHeight;
       }
       message.appendChild(speaker);
       message.appendChild(messageContent);
       messageContainer.appendChild(message);
       chatContainer.appendChild(messageContainer);
-    }
-    messageAnimation(textContent, message, messageIndex, dot) {
-      let messageArray = message.split(" ");
-      if (messageIndex < messageArray.length) {
-        textContent.innerHTML += `${messageArray[messageIndex]} `;
-        setTimeout(()=>{
-            this.messageAnimation(textContent, message, messageIndex+1, dot);
-        },100);
-      } else {
-        dot.remove();
-      }
-      // messageArray.forEach(word => {
-      //   setTimeout(()=>{
-      //     textContent.innerHTML += `${word} `;
-      //   },100);
-      // });
+      chatContainer.addEventListener('scroll', function() {
+        isManuallyScrolled = true;
+      });
     }
   }
   customElements.define('chat-component', Chat);

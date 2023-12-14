@@ -173,15 +173,26 @@ class UserInteraction extends HTMLElement {
           this.deactivateSend();
         }
       });
+      userInput.addEventListener('keydown', (event) => {
+        if (event.key == "Enter") {
+          this.sendInput(event);
+        }
+        userInput.focus();
+      });
       let sendButton = this.shadow.querySelector('.send-button');
       sendButton.addEventListener('click', (event) => {
-        event.preventDefault();
-        document.dispatchEvent(new CustomEvent('startChat',{
-          detail: {
-            prompt: userInput.value,
-          }
-        }));
+        this.sendInput(event);
+        userInput.focus();
       });    
+    }
+    sendInput(event) {
+      let userInput = this.shadow.querySelector('textarea');
+      event.preventDefault();
+      document.dispatchEvent(new CustomEvent('startChat',{
+        detail: {
+          prompt: userInput.value,
+        }
+      }));
     }
     activateSend() {
       let sendButton = this.shadow.querySelector('.send-button');
