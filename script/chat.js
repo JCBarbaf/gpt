@@ -2,7 +2,7 @@ class Chat extends HTMLElement {
 
     constructor () {
       super()
-      this.shadow = this.attachShadow({ mode: 'open' })
+      this.shadow = this.attachShadow({ mode: 'open' });
       this.isNewChat = true;
     }
   
@@ -22,7 +22,7 @@ class Chat extends HTMLElement {
         this.isNewChat = false;
       }
       this.createMessage('images/user-avatar.png','Tú',prompt);
-      this.createMessage('images/chatDPM.png','ChatDPM','Para k kieres saver eso jajaja salu2');
+      this.createMessage('images/chatDPM.png','ChatDPM');
     };
     render () {
       this.shadow.innerHTML =
@@ -126,6 +126,28 @@ class Chat extends HTMLElement {
           text-align: justify;
           line-height: 1.5rem;
         }
+        .message span:first-child {
+          margin-right: 1%;
+        }
+        .waiting {
+          width: 10px;
+          height: 10px;
+          display: inline-block;
+          background-color: white;
+          border-radius: 50%;
+          animation: pulse 0.7s infinite;
+        }
+        @keyframes pulse {
+          0% {
+            transform: scale(1);
+          }
+          50% {
+            transform: scale(1.2);
+          }
+          100% {
+            transform: scale(1);
+          }
+        }
       </style>
       <div class="chat">
         <section class="welcome">
@@ -171,12 +193,39 @@ class Chat extends HTMLElement {
       let speaker = document.createElement('h3');
       speaker.innerHTML= speakerName;
       let messageContent = document.createElement('p');
-      messageContent.innerHTML = messageText;
+      if (messageText) {
+        messageContent.innerHTML = messageText;
+      } else {
+        let dot = document.createElement('span');
+        let textContent = document.createElement('span');
+        dot.classList.add('waiting');
+        messageContent.appendChild(textContent);
+        messageContent.appendChild(dot);
+        setTimeout(() => {
+          let message = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam luctus cursus justo, ac laoreet quam interdum ut. Nullam vitae tortor a nulla consequat porta ut eu odio. Integer condimentum tincidunt sollicitudin. Nunc non leo ut mauris cursus gravida ut non elit. Nulla diam nisl, accumsan sed vulputate a, ultrices sed ex. Sed ultrices orci nisi, vel aliquet quam ornare sed. Nam iaculis sem mauris, sed sodales ipsum mattis at. Sed varius facilisis hendrerit. Aenean et quam fermentum turpis egestas vehicula sed a urna. Nulla mollis blandit arcu quis placerat. Etiam vel est interdum, aliquet turpis ac, rhoncus sem. Phasellus feugiat arcu eros, vitae egestas eros tempus eget. Proin rutrum augue id convallis vulputate. In finibus suscipit diam, non auctor mi commodo et. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nam vel ante non enim ullamcorper gravida.';
+          this.messageAnimation(textContent, message, 0, dot);
+        }, 3000);
+      }
       message.appendChild(speaker);
       message.appendChild(messageContent);
       messageContainer.appendChild(message);
       chatContainer.appendChild(messageContainer);
     }
+    messageAnimation(textContent, message, messageIndex, dot) {
+      let messageArray = message.split(" ");
+      if (messageIndex < messageArray.length) {
+        textContent.innerHTML += `${messageArray[messageIndex]} `;
+        setTimeout(()=>{
+            this.messageAnimation(textContent, message, messageIndex+1, dot);
+        },100);
+      } else {
+        dot.remove();
+      }
+      // messageArray.forEach(word => {
+      //   setTimeout(()=>{
+      //     textContent.innerHTML += `${word} `;
+      //   },100);
+      // });
+    }
   }
-  
   customElements.define('chat-component', Chat);
