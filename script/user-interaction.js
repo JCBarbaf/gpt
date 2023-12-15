@@ -207,7 +207,7 @@ class UserInteraction extends HTMLElement {
       let sendButton = this.shadow.querySelector('.send-button');
       let stopButton = this.shadow.querySelector('.stop-button');
       userInput.addEventListener('input', () => {
-        if (userInput.value) {
+        if (userInput.value && !stopButton.classList.contains('active')) {
           this.activateSend();
         } else {
           this.deactivateSend();
