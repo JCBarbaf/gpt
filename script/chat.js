@@ -4,6 +4,7 @@ class Chat extends HTMLElement {
       super()
       this.shadow = this.attachShadow({ mode: 'open' });
       this.isNewChat = true;
+      this.messageIndex = 0;
     }
   
     connectedCallback () {
@@ -13,6 +14,9 @@ class Chat extends HTMLElement {
       document.addEventListener('newChat', (event => {
         this.isNewChat = true;
         this.render();
+      }));
+      document.addEventListener('stopResponse', (event => {
+        this.stopResponse();
       }));
       this.render()
     };
@@ -202,20 +206,23 @@ class Chat extends HTMLElement {
         dot.classList.add('waiting');
         messageContent.appendChild(textContent);
         messageContent.appendChild(dot);
+        document.dispatchEvent(new CustomEvent('responseStarted'));
         setTimeout(() => {
           let message = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam luctus cursus justo, ac laoreet quam interdum ut. Nullam vitae tortor a nulla consequat porta ut eu odio. Integer condimentum tincidunt sollicitudin. Nunc non leo ut mauris cursus gravida ut non elit. Nulla diam nisl, accumsan sed vulputate a, ultrices sed ex. Sed ultrices orci nisi, vel aliquet quam ornare sed. Nam iaculis sem mauris, sed sodales ipsum mattis at. Sed varius facilisis hendrerit. Aenean et quam fermentum turpis egestas vehicula sed a urna. Nulla mollis blandit arcu quis placerat. Etiam vel est interdum, aliquet turpis ac, rhoncus sem. Phasellus feugiat arcu eros, vitae egestas eros tempus eget. Proin rutrum augue id convallis vulputate. In finibus suscipit diam, non auctor mi commodo et. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nam vel ante non enim ullamcorper gravida.';
-          let messageIndex = 0;
+          // let messageIndex = 0;
           let messageAnimation = () => {
             let messageArray = message.split(" ");
-            if (messageIndex < messageArray.length) {
-              textContent.innerHTML += `${messageArray[messageIndex]} `;
-              messageIndex++;
+            if (this.messageIndex < messageArray.length) {
+              textContent.innerHTML += `${messageArray[this.messageIndex]} `;
+              this.messageIndex++;
               if (!isManuallyScrolled) {
                 chatContainer.scrollTop = chatContainer.scrollHeight;
               }
-              setTimeout(messageAnimation, 100);
+              setTimeout(messageAnimation, 50);
             } else {
               dot.remove();
+              document.dispatchEvent(new CustomEvent('responseEnded'));
+              this.messageIndex = 0;
             }
           }
           messageAnimation();
@@ -228,9 +235,15 @@ class Chat extends HTMLElement {
       message.appendChild(messageContent);
       messageContainer.appendChild(message);
       chatContainer.appendChild(messageContainer);
-      chatContainer.addEventListener('scroll', function() {
+      chatContainer.addEventListener('mouseover', function() {
         isManuallyScrolled = true;
       });
+      chatContainer.addEventListener('mouseleave', function() {
+        isManuallyScrolled = false;
+      });
+    }
+    stopResponse() {
+      this.messageIndex = 200000;
     }
   }
   customElements.define('chat-component', Chat);

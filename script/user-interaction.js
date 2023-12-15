@@ -6,11 +6,17 @@ class UserInteraction extends HTMLElement {
     }
   
     connectedCallback () {
-      document.addEventListener('startChat', (event => {
-        this.render();
-      }));
+      // document.addEventListener('startChat', (event => {
+      //   this.render();
+      // }));
       document.addEventListener('newChat', (event => {
         this.render();
+      }));
+      document.addEventListener('responseStarted', (event => {
+        this.toggleStopButton();
+      }));
+      document.addEventListener('responseEnded', (event => {
+        this.toggleStopButton();
       }));
       this.render()
     }
@@ -81,22 +87,34 @@ class UserInteraction extends HTMLElement {
         .message-input form .form-element textarea:focus{
           outline: none;
         }
-
-        .message-input .send-button button{
+        .buttons {
+          width: 2rem;
+          height: 2rem;
+          position: relative;
+        }
+        .buttons button {
+          position: absolute;
+          top: 0;
+          bottom: 0;
+          left: 0;
+          right: 0;
           display: flex;
+          justify-content: center;
           align-items: center;
           padding: 0.1rem 0.2rem;
           background-color: rgb(74, 74, 85);
           border: none;
           border-radius: 0.5rem;
         }
-
-        .message-input .send-button svg{
-          width: 1.3rem;
+        .buttons .send-button.hidden {
+          visibility: hidden;
+        }
+        .buttons svg{
+          width: 2rem;
           color:rgba(0, 0, 0, 0.3);
         }
 
-        .message-input .send-button.active button{
+        .message-input .send-button.active {
           background-color: rgb(255, 255, 255);
           cursor: pointer;
         }
@@ -110,7 +128,6 @@ class UserInteraction extends HTMLElement {
           position: absolute;
           opacity: 0;
           margin-top: -5rem;
-          margin-left: -3rem;
           padding: 0.5rem 0;
           background-color: black;
           color: #fff;
@@ -137,6 +154,21 @@ class UserInteraction extends HTMLElement {
           visibility: visible;
           opacity: 1;
         }
+
+        .buttons .stop-button {
+          visibility: hidden;
+          background: none;
+        }
+        .stop-button svg {
+          width: 1.3rem;
+        }
+        .stop-button.active {
+          visibility: visible;
+          cursor: pointer;
+        }
+        .stop-button.active svg * {
+          fill: white;
+        }
       </style>
       <div class="user-interaction">
         <slot name="examples"></slot>
@@ -151,14 +183,20 @@ class UserInteraction extends HTMLElement {
               </button>
             </div>
             <div class="form-element">
-              <textarea placeholder="Message chatDPM..."></textarea>
+              <textarea placeholder="Message chatDPM..." autofocus></textarea>
             </div>
-            <div class="send-button">
-              <button disabled>
+            <div class="buttons">
+              <button class="send-button" disabled>
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" class="text-white dark:text-black">
                   <path d="M7 11L12 6L17 11M12 18V7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
                 </svg>            
                 <span class="tooltiptext">Enviar mensaje</span>                  
+              </button>
+              <button class="stop-button">
+                <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M97 50C97 75.9574 75.9574 97 50 97C24.0426 97 3 75.9574 3 50C3 24.0426 24.0426 3 50 3C75.9574 3 97 24.0426 97 50ZM12.3791 50C12.3791 70.7775 29.2225 87.6209 50 87.6209C70.7775 87.6209 87.6209 70.7775 87.6209 50C87.6209 29.2225 70.7775 12.3791 50 12.3791C29.2225 12.3791 12.3791 29.2225 12.3791 50Z" fill="black"/>
+                  <path d="M27 27H73V73H27V27Z" fill="black"/>
+                </svg>
               </button>
             </div>
           </form>
@@ -166,6 +204,8 @@ class UserInteraction extends HTMLElement {
       </div>
       `
       let userInput = this.shadow.querySelector('textarea');
+      let sendButton = this.shadow.querySelector('.send-button');
+      let stopButton = this.shadow.querySelector('.stop-button');
       userInput.addEventListener('input', () => {
         if (userInput.value) {
           this.activateSend();
@@ -175,34 +215,51 @@ class UserInteraction extends HTMLElement {
       });
       userInput.addEventListener('keydown', (event) => {
         if (event.key == "Enter") {
-          this.sendInput(event);
+          if (!sendButton.disabled) {
+            this.sendInput(event);
+          } else {
+            event.preventDefault();
+          }
         }
-        userInput.focus();
       });
-      let sendButton = this.shadow.querySelector('.send-button');
       sendButton.addEventListener('click', (event) => {
         this.sendInput(event);
-        userInput.focus();
+      });
+      stopButton.addEventListener('click', (event) => {
+        this.stopResponse(event);
       });    
     }
     sendInput(event) {
       let userInput = this.shadow.querySelector('textarea');
       event.preventDefault();
+      this.deactivateSend();
       document.dispatchEvent(new CustomEvent('startChat',{
         detail: {
           prompt: userInput.value,
         }
       }));
+      userInput.value = null;
+      userInput.focus();
     }
     activateSend() {
       let sendButton = this.shadow.querySelector('.send-button');
-      sendButton.querySelector('button').disabled = false;
+      sendButton.disabled = false;
       sendButton.classList.add('active');
     }
     deactivateSend() {
       let sendButton = this.shadow.querySelector('.send-button');
-      sendButton.querySelector('button').disabled = true;
+      sendButton.disabled = true;
       sendButton.classList.remove('active');
+    }
+    toggleStopButton() {
+      let sendButton = this.shadow.querySelector('.send-button');
+      let stopButton = this.shadow.querySelector('.stop-button');
+      sendButton.classList.toggle('hidden');
+      stopButton.classList.toggle('active');
+    }
+    stopResponse(event) {
+      event.preventDefault();
+      document.dispatchEvent(new CustomEvent('stopResponse'));
     }
   }
   
