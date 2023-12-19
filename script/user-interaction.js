@@ -6,17 +6,16 @@ class UserInteraction extends HTMLElement {
     }
   
     connectedCallback () {
-      // document.addEventListener('startChat', (event => {
-      //   this.render();
-      // }));
       document.addEventListener('newChat', (event => {
         this.render();
       }));
       document.addEventListener('responseStarted', (event => {
-        this.toggleStopButton();
+        // this.toggleStopButton();
+        this.setAttribute('response-state', 'response');
       }));
       document.addEventListener('responseEnded', (event => {
-        this.toggleStopButton();
+        // this.toggleStopButton();
+        this.setAttribute('response-state', 'waiting');
       }));
       this.render()
     }
@@ -98,6 +97,7 @@ class UserInteraction extends HTMLElement {
           bottom: 0;
           left: 0;
           right: 0;
+          visibility: hidden;
           display: flex;
           justify-content: center;
           align-items: center;
@@ -106,8 +106,8 @@ class UserInteraction extends HTMLElement {
           border: none;
           border-radius: 0.5rem;
         }
-        .buttons .send-button.hidden {
-          visibility: hidden;
+        .send-button.visible, .stop-button.visible {
+          visibility: visible;
         }
         .buttons svg{
           width: 2rem;
@@ -156,17 +156,13 @@ class UserInteraction extends HTMLElement {
         }
 
         .buttons .stop-button {
-          visibility: hidden;
           background: none;
+          cursor: pointer;
         }
         .stop-button svg {
           width: 1.3rem;
         }
-        .stop-button.active {
-          visibility: visible;
-          cursor: pointer;
-        }
-        .stop-button.active svg * {
+        .stop-button svg * {
           fill: white;
         }
       </style>
@@ -186,7 +182,7 @@ class UserInteraction extends HTMLElement {
               <textarea placeholder="Message chatDPM..." autofocus></textarea>
             </div>
             <div class="buttons">
-              <button class="send-button" disabled>
+              <button class="send-button visible" disabled>
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" class="text-white dark:text-black">
                   <path d="M7 11L12 6L17 11M12 18V7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
                 </svg>            
@@ -207,7 +203,7 @@ class UserInteraction extends HTMLElement {
       let sendButton = this.shadow.querySelector('.send-button');
       let stopButton = this.shadow.querySelector('.stop-button');
       userInput.addEventListener('input', () => {
-        if (userInput.value && !stopButton.classList.contains('active')) {
+        if (userInput.value && !stopButton.classList.contains('visible')) {
           this.activateSend();
         } else {
           this.deactivateSend();
@@ -254,12 +250,18 @@ class UserInteraction extends HTMLElement {
     toggleStopButton() {
       let sendButton = this.shadow.querySelector('.send-button');
       let stopButton = this.shadow.querySelector('.stop-button');
-      sendButton.classList.toggle('hidden');
-      stopButton.classList.toggle('active');
+      sendButton.classList.toggle('visible');
+      stopButton.classList.toggle('visible');
     }
     stopResponse(event) {
       event.preventDefault();
       document.dispatchEvent(new CustomEvent('stopResponse'));
+    }
+    static get observedAttributes () {
+      return ['response-state'];
+    }
+    attributeChangedCallback (name, oldValue, newValue) {
+      this.toggleStopButton();
     }
   }
   

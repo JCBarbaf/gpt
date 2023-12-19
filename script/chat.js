@@ -206,7 +206,8 @@ class Chat extends HTMLElement {
         dot.classList.add('waiting');
         messageContent.appendChild(textContent);
         messageContent.appendChild(dot);
-        document.dispatchEvent(new CustomEvent('responseStarted'));
+        // document.dispatchEvent(new CustomEvent('responseStarted'));
+        this.setAttribute('response-state', 'response');
         setTimeout(() => {
           let message = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam luctus cursus justo, ac laoreet quam interdum ut. Nullam vitae tortor a nulla consequat porta ut eu odio. Integer condimentum tincidunt sollicitudin. Nunc non leo ut mauris cursus gravida ut non elit. Nulla diam nisl, accumsan sed vulputate a, ultrices sed ex. Sed ultrices orci nisi, vel aliquet quam ornare sed. Nam iaculis sem mauris, sed sodales ipsum mattis at. Sed varius facilisis hendrerit. Aenean et quam fermentum turpis egestas vehicula sed a urna. Nulla mollis blandit arcu quis placerat. Etiam vel est interdum, aliquet turpis ac, rhoncus sem. Phasellus feugiat arcu eros, vitae egestas eros tempus eget. Proin rutrum augue id convallis vulputate. In finibus suscipit diam, non auctor mi commodo et. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nam vel ante non enim ullamcorper gravida.';
           // let messageIndex = 0;
@@ -221,7 +222,8 @@ class Chat extends HTMLElement {
               setTimeout(messageAnimation, 50);
             } else {
               dot.remove();
-              document.dispatchEvent(new CustomEvent('responseEnded'));
+              // document.dispatchEvent(new CustomEvent('responseEnded'));
+              this.setAttribute('response-state', 'waiting');
               this.messageIndex = 0;
             }
           }
@@ -244,6 +246,18 @@ class Chat extends HTMLElement {
     }
     stopResponse() {
       this.messageIndex = 200000;
+    }
+    static get observedAttributes () {
+      return ['response-state']
+    }
+    attributeChangedCallback (name, oldValue, newValue) {
+      if (name == 'response-state') {
+        if (newValue == 'response') {
+          document.dispatchEvent(new CustomEvent('responseStarted'));
+        } else if (newValue == 'waiting') {
+          document.dispatchEvent(new CustomEvent('responseEnded'));
+        }
+      }
     }
   }
   customElements.define('chat-component', Chat);
